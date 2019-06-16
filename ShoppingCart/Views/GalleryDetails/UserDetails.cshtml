@@ -1,0 +1,24 @@
+﻿@model ShoppingCart.Models.GalleryDetails
+    @using ShoppingCart.Models
+
+@{
+    
+    var name = (User)ViewData["user"];
+}
+
+@using (Html.BeginForm("UserLogin", "Login", FormMethod.Post))
+{
+    <table>
+        <tr>
+            <td>Hello,@name.FullName</td>
+            <br />
+            <td>@Html.ActionLink("My Purchases", "GetOrderDetails", "OrderDetails")</td>
+            <br />
+            <td>@Html.ActionLink("LogOut", "UserLogin", "Login")</td>
+        </tr>
+        <tr>
+            <td>@Html.TextBoxFor(Search => Search.ProductName)</td>
+            <td><input type="submit" value="Search"/></td>
+        </tr>
+    </table>
+}

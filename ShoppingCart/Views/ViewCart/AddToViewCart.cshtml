@@ -1,0 +1,55 @@
+﻿@model ShoppingCart.Models.CartDetails
+    @using ShoppingCart.Models
+@{
+    ViewBag.Title = "AddToViewCart";
+}
+
+@{ 
+    var sessionId = (string)ViewData["sessionId"];
+    var gallerycart = (List<CartDetails>)ViewData["gallerycart"];
+    var user = ViewData["userid"];
+
+}
+
+<body>
+        <table style="width:100%">
+            <tr>
+                <td><h2><b>View Cart</b></h2></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.ActionLink("Continue Shopping", "GetGallery", "GalleryDetails", new { sessionId }, null)&nbsp;
+                    <b>|</b>&nbsp;@Html.ActionLink("CheckOut", "GetOrderDetails", "OrderDetails", new { sessionId ,userId= user }, null)
+                </td>
+                <td>Total:</td>
+            </tr>
+        </table>
+
+        @foreach (var d in gallerycart)
+        {
+            <table>
+                <tr>
+                    <td>@d.Gallery.ImageUrl</td>
+                    <td>Price:&nbsp;@d.Price</td>
+                </tr>
+                <tr>
+                    <td>@d.Gallery.ProductName</td>
+                    <td>Quantity:</td>
+                    <td>
+                        @using (Html.BeginForm("UpdateCartDetails", "ViewCart", FormMethod.Post))
+                        {
+                            <input type="number" id="quantity" name="Quantity" value="" min="0" max="10" @*onchange="location.href='@Url.Action("UpdateCartDetails", "ViewCart",new { })'"*@ />
+                            <input type="hidden" name="Price" value="@d.Gallery.Price" />
+                            <input type="hidden" name="ProductId" value="@d.Gallery.ProductId" />
+                            <input type="hidden" name="sessionId" value="@sessionId" />
+                            <input type="submit" name="update" value="Update"/>
+                            <input type="hidden" name="UserId" value="@user"/>
+                        }
+                    </td>
+                </tr>
+                <tr><td>@d.Gallery.Description</td></tr>
+            </table>
+        }
+
+    
+</body>

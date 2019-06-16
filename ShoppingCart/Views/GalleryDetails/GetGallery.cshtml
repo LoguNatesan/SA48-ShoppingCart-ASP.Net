@@ -1,0 +1,101 @@
+﻿@model ShoppingCart.Models.GalleryDetails
+@using ShoppingCart.Models
+
+@{
+    ViewBag.Title = "Gallery";
+}
+
+@{
+    var products = (List<GalleryDetails>)ViewData["products"];
+    var name = (User)ViewData["user"];
+    var sessionid = (string)ViewData["sessionId"];
+    var count = (int)ViewData["count"];
+}
+<head>
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">*@
+    <script>
+        function sum()
+        {
+            var x = document.getElementById("cartvalue").value;
+            x = x + 1;            
+            document.getElementById("cartvalue").value = x;
+        }
+   
+        
+    </script>
+</head>
+
+
+<body>
+    <table style="width:100%">
+        <tr>
+            <td>
+
+                Hello,@name.FullName &nbsp;
+                @Html.ActionLink("My Purchases", "AddToMyPurchases", "GalleryDetails", new { sessionid,@name.UserId },null) &nbsp;
+                <b>|</b>&nbsp;@Html.ActionLink("LogOut", "UserLogout", "LogOut", new { sessionid,@name.UserId },null)
+            </td>
+            <td colspan="5"></td>
+            <td>
+                @using (Html.BeginForm("AddToViewCart", "ViewCart", FormMethod.Post))
+                {
+                  <input style="font-size:25px;float:right" type="submit" value="Cart" />
+                  <input style="font-size:25px;float:right;width:75px" type="text" name="carticon" id="cartvalue" value="@count" />
+                  <input type="hidden" name="sessionId" value="@sessionid" />
+                  <input type="hidden" name="UserId" value="@name.UserId"/>
+                }
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <form action="GetGalleryBySearch" method="post">
+                    @*@Html.TextBoxFor(Search => Search.ProductName) &nbsp;*@
+                    <input type="text" name="ProductName" value="" /> &nbsp;
+                    <input type="submit" name="search" value="Search" />
+                    <input type="hidden" name="sessionId" value="@sessionid" />
+                    <input type="hidden" name="UserId" value="@name.UserId"/>
+                </form>
+            </td>
+            <td></td>
+        </tr>
+    </table>
+    <br />
+    <table style="width:100%;text-align:center">
+        <tr>
+                @foreach (var d in products)
+                {
+                    <td>
+                        <table border="1" style="width:70%;height:100%">
+                            <tr><td><img src="@d.ImageUrl" /></td></tr>
+                            <tr><td></td></tr>
+                            <tr><td><b>@d.ProductName</b></td></tr>
+
+                            <tr><td></td></tr>
+                            <tr><td>@d.Description</td></tr>
+                            <tr><td></td></tr>
+                            <tr><td>SGD @d.Price.00</td></tr>
+                            <tr><td></td></tr>
+                            <tr>
+                                <td>
+                                    @using (Html.BeginForm("AddToCartDetails", "ViewCart", FormMethod.Post))
+                                    {
+                                        <button type="submit" value="@d.ProductId" name="ProductId" @*onclick="sum()"*@>Add To Cart</button>
+                                        <input type="hidden" name="Price" value="@d.Price" />
+                                        <input type="hidden" name="UserId" value="@name.UserId" />
+                                        <input type="hidden" name="sessionId" value="@sessionid" />
+                                    }
+                                    </td>
+                            </tr>
+                        </table>
+                    </td>
+                  }
+              }
+        </tr>
+    </table>
+
+</body>
+
+
+
+

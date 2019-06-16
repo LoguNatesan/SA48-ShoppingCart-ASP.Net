@@ -1,0 +1,54 @@
+﻿@model ShoppingCart.Models.OrderDetails
+    @using ShoppingCart.Models
+@{
+    ViewBag.Title = "GetOrderDetails";
+}
+
+@{ 
+    var sessionid = ViewData["sessionId"];
+    var orderlist = (List<OrderDetails>)ViewData["orderlist"];
+    var userid = ViewData["userId"];
+}
+
+<body>
+    <table>
+        <tr>
+            <td><h2>My Purchases</h2></td>
+            <td>
+                @Html.ActionLink("Home", "GetGallery", "GalleryDetails", new { sessionid,userid }, null) &nbsp;
+                <b>|</b>&nbsp;@Html.ActionLink("LogOut", "UserLogin", "Login", new { sessionid,userid }, null)
+
+            </td>
+        </tr>
+    </table>
+    
+                @foreach (var d in orderlist)
+                {
+                    <table>
+                        <tr>
+                            <td>@d.gallery.ImageUrl</td>
+                        </tr>
+                        <tr>
+                            <td>@d.gallery.ProductName</td>
+                        </tr>
+                        <tr>
+                            <td>@d.gallery.Description</td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" name="download" value="Download"/> </td>
+                        </tr>
+                    </table>
+                    <table>
+                        <tr>
+                            <td>Purchased On:&nbsp;@d.PurchasedOn</td>
+                        </tr>
+                        <tr>
+                            <td>Quantity:&nbsp;@d.Quantity</td>
+                        </tr>
+                        <tr>
+                            <td>Activation Code:&nbsp;</td>
+                        </tr>
+                    </table>
+                }
+   
+</body>

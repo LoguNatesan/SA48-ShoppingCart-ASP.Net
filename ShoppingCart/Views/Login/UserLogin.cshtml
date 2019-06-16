@@ -1,0 +1,32 @@
+﻿@model ShoppingCart.Models.Login
+    @using ShoppingCart.Models
+@{
+    ViewBag.Title = "UserLogin";
+
+}
+
+<h2>UserLogin</h2>
+
+@{ 
+    var userId = ViewData["userId"];
+}
+@using (Html.BeginForm("UserLogin", "Login", FormMethod.Post))
+{
+<table>
+    <tr>
+        <td>@Html.LabelFor(Name => Name.UserName)</td>
+        <td>@Html.TextBoxFor(Name => Name.UserName)</td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(Password => Password.Password)</td>
+        <td>@Html.TextBoxFor(Password => Password.Password)</td>
+    </tr>
+    <tr>
+        <td>
+        <input type="submit" value="Login"/>
+            <input type="hidden" name="UserId" value="@userId"/>
+        </td>
+    </tr>
+</table>
+
+}
